@@ -12,7 +12,6 @@ function App() {
   const [playerMoney, setPlayerMoney] = useState(0);
   const shopInfo = useQuery(api.tasks.get);
 
-  
 
 
   return (
@@ -23,13 +22,13 @@ function App() {
           <div>
             {" "}
             {shopInfo?.map(({ _id, name , id, sell_price, cur_price, quantity}) => (
-              id < 4 ? <div key={_id}> {quantity == 0 ? playerMoney >= sell_price ? <DisabledShopComponent shopName={name} price={sell_price} imageState={disabledBuyPic}/> : <DisabledShopComponent shopName={name} price={sell_price} imageState={disabledPic}/> : <BuyShopComponent/>} </div> : ""
+              id < 4 ? <div key={_id}> {quantity == 0 ? playerMoney >= sell_price ? <DisabledShopComponent shopName={name} shopNum={_id} price={sell_price} imageState={disabledBuyPic} canBuyShop={true}/> : <DisabledShopComponent shopName={name} price={sell_price} imageState={disabledPic} canBuyShop={false} shopNum={_id} /> : <BuyShopComponent/>} </div> : ""
             ))}
          </div>
          <div>
             {" "}
             {shopInfo?.map(({ _id, id, name , sell_price, cur_price, quantity}) => (
-                 id > 3 ? <div key={_id}> {quantity == 0 ? playerMoney >= sell_price ? <DisabledShopComponent shopName={name} price={sell_price} imageState={disabledBuyPic}/> : <DisabledShopComponent shopName={name} price={sell_price} imageState={disabledPic}/> : <BuyShopComponent/>} </div> : ""
+                 id > 3 ? <div key={_id}> {quantity == 0 ? playerMoney >= sell_price ? <DisabledShopComponent shopName={name} shopNum={_id} price={sell_price} imageState={disabledBuyPic} canBuyShop={true}/> : <DisabledShopComponent shopName={name} price={sell_price} imageState={disabledPic} canBuyShop={false} shopNum={_id}/> : <BuyShopComponent/>} </div> : ""
             ))}
          </div>
        </div>
