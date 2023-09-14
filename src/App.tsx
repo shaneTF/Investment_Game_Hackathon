@@ -2,9 +2,19 @@ import disabledBuyPic from "./assets/buydisabledshop.png";
 import disabledPic from "./assets/disabledshop.png";
 import BuyShopComponent from "./components/BuyShopComponent";
 import DisabledShopComponent from "./components/DisabledShopComponent";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useQuery } from "convex/react";
+import { api } from "../convex/_generated/api";
 
 function App() {
+
+
+  const [playerMoney, setPlayerMoney] = useState(0);
+  const shopInfo = useQuery(api.tasks.get);
+
+  
+
+
   return (
     <div className="grid h-screen w-screen place-items-center">
       <div className="aspect-square h-[40rem] w-[30rem] rounded-lg border-2 border-solid border-black">
@@ -12,71 +22,23 @@ function App() {
         <div className="grid grid-cols-2 gap-x-[5.7rem] py-8 mx-8">
           <div>
             {" "}
-            <DisabledShopComponent
-              shopName="Lemon Shop"
-              price={2}
-              imageState={disabledPic}
-            />
-          </div>
-          <div>
+            {shopInfo?.map(({ _id, name , id, sell_price, cur_price, quantity}) => (
+              id < 4 ? <div key={_id}> {quantity == 0 ? playerMoney >= sell_price ? <DisabledShopComponent shopName={name} price={sell_price} imageState={disabledBuyPic}/> : <DisabledShopComponent shopName={name} price={sell_price} imageState={disabledPic}/> : <BuyShopComponent/>} </div> : ""
+            ))}
+         </div>
+         <div>
             {" "}
-            <DisabledShopComponent
-              shopName="Pizza Shop"
-              price={20}
-              imageState={disabledPic}
-            />
-          </div>
-          <div>
-            {" "}
-            <DisabledShopComponent
-              shopName="Soup Shop"
-              price={200}
-              imageState={disabledPic}
-            />
-          </div>
-          <div>
-            {" "}
-            <DisabledShopComponent
-              shopName="Fancy Shop"
-              price={20000}
-              imageState={disabledPic}
-            />
-          </div>
-          <div>
-            {" "}
-            <DisabledShopComponent
-              shopName="Cat Shop"
-              price={200000}
-              imageState={disabledPic}
-            />
-          </div>
-          <div>
-            {" "}
-            <DisabledShopComponent
-              shopName="Clown Shop"
-              price={2000000}
-              imageState={disabledPic}
-            />
-          </div>
-          <div>
-            {" "}
-            <DisabledShopComponent
-              shopName="Shane's Shop"
-              price={20000000}
-              imageState={disabledPic}
-            />
-          </div>
-          <div>
-            {" "}
-            <DisabledShopComponent
-              shopName="God's Shop"
-              price={2000000000}
-              imageState={disabledPic}
-            />
-          </div>
-        </div>
+            {shopInfo?.map(({ _id, id, name , sell_price, cur_price, quantity}) => (
+                 id > 3 ? <div key={_id}> {quantity == 0 ? playerMoney >= sell_price ? <DisabledShopComponent shopName={name} price={sell_price} imageState={disabledBuyPic}/> : <DisabledShopComponent shopName={name} price={sell_price} imageState={disabledPic}/> : <BuyShopComponent/>} </div> : ""
+            ))}
+         </div>
+       </div>
       </div>
     </div>
+         
+          
+ 
+
   );
 }
 
