@@ -10,4 +10,14 @@ export default defineSchema({
     cur_price: v.number(),
 
   }),
+  Players: defineTable({
+   
+    money: v.float64(),
+    shopQuantity: v.array(v.number()),
+    shopRates: v.array(v.float64()),
+    userName: v.string(), 
+    closedBrowser: v.boolean(),
+
+  }),
 });
+

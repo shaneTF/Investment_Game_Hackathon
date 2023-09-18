@@ -2,12 +2,16 @@ import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 
+
 interface shopInfo{
     shopName: string;
-    shopNum: Id<"Shop">;
+    playerRecord: Id<"Players">;
+    shopNum: number;
     price: number;
     imageState: string;
     canBuyShop: boolean;
+    setQuantity: React.Dispatch<React.SetStateAction<number[]>>;
+    quantity: Array<number>;
 }
 
 
@@ -17,14 +21,22 @@ function DisabledShopComponent(props:shopInfo)
 
     const updateDocument = useMutation(api.tasks.updateDocument);
 
+
     function userBuyingShop() {
         
-
-        updateDocument({
-            id: props.shopNum,
-            quantity: 1,
+        if(props.canBuyShop)
+        {
+            props.quantity[props.shopNum] += 1;
+            props.setQuantity(props.quantity);
+            console.log(props.playerRecord);
             
-        });
+            updateDocument({
+                id: props.playerRecord,
+                quantity: props.quantity,
+                
+            });
+        }
+     
         
       }
 

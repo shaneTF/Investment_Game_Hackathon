@@ -8,20 +8,31 @@ export const get = query({
   },
 });
 
+
+
 export const updateDocument = mutation({
   args: { 
-    id: v.id("Shop"),
-    quantity: v.number()
+    id: v.id("Players"),
+    quantity: v.array(v.number()),
 },
  
   handler: async (ctx, args) => {
     const { id } = args;
-    console.log(await ctx.db.get(id));
+  
     // { text: "foo", status: { done: true }, _id: ... }
 
     // Add `tag` and overwrite `status`:
-    await ctx.db.patch(id, { quantity: args.quantity });
+    await ctx.db.patch(id, { shopQuantity: args.quantity });
     console.log(await ctx.db.get(id));
 
 },
 });
+
+export const getPlayerInfo = query({
+  args: {userName: v.string()},
+  handler: async (ctx, args) => {
+    const myUser = await ctx.db.query("Players").filter( (q: any) => q.eq(q.field("userName") , "Potatoe" )).collect();
+    return myUser;
+  },
+});
+
